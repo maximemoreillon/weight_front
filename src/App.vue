@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <AppTemplate applicationName="SHCP"/>
+    <AppTemplate applicationName="Weight"/>
 
   </div>
 </template>
@@ -18,11 +18,6 @@ export default {
   methods: {
 
   },
-
-
-
-
-
 }
 </script>
 <style>

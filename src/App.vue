@@ -8,7 +8,7 @@
 
 <script>
 
-import AppTemplate from '@/components/vue_application_template/AppTemplate.vue'
+import AppTemplate from '@moreillon/vue_application_template'
 
 export default {
   name: 'App',

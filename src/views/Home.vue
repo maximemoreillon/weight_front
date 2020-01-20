@@ -2,6 +2,10 @@
   <div class="home">
     <div v-if="dataCollection.loaded">
 
+      <div class="current_weight_wrapper">
+        Current weight: {{dataCollection.datasets[0].data[0]}} kg
+      </div>
+
       <LineChart
         class="chart"
         v-if="dataCollection.loaded"
@@ -31,7 +35,7 @@ export default {
       dataCollection: {
         loaded: false,
         labels: [], // filled by API call
-        
+
         datasets: [
           {
             label: 'Weight',
@@ -70,3 +74,11 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.current_weight_wrapper{
+  text-align: center;
+  margin: 15px;
+  font-size: 150%;
+}
+</style>

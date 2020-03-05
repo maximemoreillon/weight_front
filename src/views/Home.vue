@@ -24,7 +24,6 @@ import Loader from '@/components//Loader.vue'
 
 export default {
   name: 'home',
-
   components: {
     LineChart,
     Loader
@@ -51,28 +50,38 @@ export default {
       }
     }
   },
-  mounted(){
+  methods: {
+    get_weight_history(){
+      // Loading history
+      this.dataCollection.loaded = false;
 
-    // Loading history
-    this.dataCollection.loaded = false;
+      this.axios.post("https://weight.maximemoreillon.com/history", {})
+      .then(response => {
+        // Empty array
+        this.dataCollection.labels.splice(0,this.dataCollection.labels.length)
+        this.dataCollection.datasets[0].data.splice(0,this.dataCollection.datasets[0].data.length)
+        // repopulate
+        response.data.forEach(entry => {
+          this.dataCollection.datasets[0].data.push(Number(entry.weight))
+          this.dataCollection.labels.push(new Date(entry.date))
+        })
 
-    this.axios.post("https://weight.maximemoreillon.com/history", {})
-    .then(response => {
-      // Empty array
-      this.dataCollection.labels.splice(0,this.dataCollection.labels.length)
-      this.dataCollection.datasets[0].data.splice(0,this.dataCollection.datasets[0].data.length)
-      // repopulate
-      response.data.forEach(entry => {
-        this.dataCollection.datasets[0].data.push(Number(entry.weight))
-        this.dataCollection.labels.push(new Date(entry.date))
+        this.dataCollection.loaded = true;
       })
+      .catch( error => console.log(error.response))
+    }
 
-      this.dataCollection.loaded = true;
-    })
-    .catch( error => alert(error))
+  },
+  mounted(){
+    //this.$cookies.set('jwt', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfbmFtZSI6InNjYWxlIiwiaWF0IjoxNTc5NDI0MDMyfQ.Rdu2qGPuaaYlPZi_0F9mBrOw3xOZLZTeM9DgHzVK8Ho")
+    this.$cookies.remove('jwt')
+    //this.$cookies.set('jwt', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfbmFtZSI6InNjYWxlIiwiaWF0IjoxNTc5NDI0MDMyfQ.Rdu2qGPuaaYlPZi_0F9mBrOw3xOZLZTeM9DgHzVK8Ho")
+
+    this.get_weight_history();
   }
 
 }
+
 </script>
 
 <style scoped>

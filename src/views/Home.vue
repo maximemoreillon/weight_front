@@ -3,7 +3,7 @@
     <div v-if="dataCollection.loaded">
 
       <div class="current_weight_wrapper">
-        Current weight: {{dataCollection.datasets[0].data[0]}} kg
+        Current weight: {{dataCollection.datasets[0].data[dataCollection.datasets[0].data.length-1]}} kg
       </div>
 
       <LineChart
@@ -20,7 +20,7 @@
 <script>
 // @ is an alias to /src
 import LineChart from '@/components/charts/LineChart.vue'
-import Loader from '@/components//Loader.vue'
+import Loader from '@/components/Loader.vue'
 
 export default {
   name: 'home',
@@ -63,7 +63,7 @@ export default {
         // repopulate
         response.data.forEach(entry => {
           this.dataCollection.datasets[0].data.push(Number(entry.weight))
-          this.dataCollection.labels.push(new Date(entry.date))
+          this.dataCollection.labels.push(new Date(entry.time))
         })
 
         this.dataCollection.loaded = true;
@@ -73,9 +73,6 @@ export default {
 
   },
   mounted(){
-    //this.$cookies.set('jwt', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfbmFtZSI6InNjYWxlIiwiaWF0IjoxNTc5NDI0MDMyfQ.Rdu2qGPuaaYlPZi_0F9mBrOw3xOZLZTeM9DgHzVK8Ho")
-    this.$cookies.remove('jwt')
-    //this.$cookies.set('jwt', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfbmFtZSI6InNjYWxlIiwiaWF0IjoxNTc5NDI0MDMyfQ.Rdu2qGPuaaYlPZi_0F9mBrOw3xOZLZTeM9DgHzVK8Ho")
 
     this.get_weight_history();
   }

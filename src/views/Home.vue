@@ -68,7 +68,7 @@ export default {
 
         this.dataCollection.loaded = true;
       })
-      .catch( error => console.log(error.response))
+      .catch( error => console.log(error.response.data))
     }
 
   },

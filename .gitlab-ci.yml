@@ -17,8 +17,7 @@ containerization:
       else echo "${CONTAINER_REGISTRY_PASSWORD}" | docker login ${CONTAINER_REGISTRY} --username ${CONTAINER_REGISTRY_USERNAME} --password-stdin;
       fi
     # Building the container image
-    - >
-      docker build -t ${DOCKER_IMAGE} .
+    - docker build -t ${DOCKER_IMAGE} .
     # Pushing the image to the registry
     - docker push ${DOCKER_IMAGE}
     # Cleanup

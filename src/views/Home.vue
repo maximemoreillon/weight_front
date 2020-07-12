@@ -53,9 +53,10 @@ export default {
   methods: {
     get_weight_history(){
       // Loading history
-      this.dataCollection.loaded = false;
+      this.dataCollection.loaded = false
+      let url = `${VUE_APP_WEIGHT_API_URL}/history`
 
-      this.axios.get("https://api.weight.maximemoreillon.com/history")
+      this.axios.get(url)
       .then(response => {
         // Empty array
         this.dataCollection.labels.splice(0,this.dataCollection.labels.length)

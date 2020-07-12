@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
   }
   else {
     delete axios.defaults.headers.common['Authorization']
-    window.location.href = "https://authentication.maximemoreillon.com/";
+    window.location.href = process.env.VUE_APP_AUTHENTICATION_FRONT_URL
   }
 
   next();

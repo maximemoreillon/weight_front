@@ -54,7 +54,7 @@ export default {
     get_weight_history(){
       // Loading history
       this.dataCollection.loaded = false
-      let url = `${VUE_APP_WEIGHT_API_URL}/history`
+      let url = `${process.env.VUE_APP_WEIGHT_API_URL}/history`
 
       this.axios.get(url)
       .then(response => {

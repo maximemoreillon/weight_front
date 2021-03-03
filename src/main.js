@@ -5,11 +5,13 @@ import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookies from 'vue-cookies'
-import '@mdi/font/css/materialdesignicons.css';
-
+import VueApexCharts from 'vue-apexcharts'
 
 Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 // Redirect to login screen if not logged in (i.e. does not have JWT in cookies)
 router.beforeEach((to, from, next) => {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Weight from '../views/WeightApex.vue'
+import Weight from '../views/Weight.vue'
 
 Vue.use(VueRouter)
 

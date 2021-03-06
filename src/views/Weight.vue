@@ -72,10 +72,25 @@ export default {
       options: {
         chart: {
           id: 'weight-chart',
-          type: 'area',
+          type: 'line',
+          /*
           zoom: {
             autoScaleYaxis: true
           },
+          */
+          animations: {
+            enabled: true,
+            easing: 'easeinout',
+            speed: 800,
+            animateGradually: {
+              enabled: true,
+              delay: 150
+            },
+            dynamicAnimation: {
+              enabled: true,
+              speed: 350
+            }
+          }
         },
         stroke: {
           curve: 'straight',
@@ -108,7 +123,7 @@ export default {
         const sub_array = input_array.slice(index-sample_count,index)
         if(!sub_array.length) return item
         const average = sub_array.reduce((a, b) => a + b, 0)/sample_count
-        const rounded_average = Math.round(average * 10000) / 10000
+        const rounded_average = Math.round(average * 100) / 100
         return rounded_average
       })
     },
@@ -129,7 +144,7 @@ export default {
           }
         })
 
-        /*
+
         const average_data = this.moving_average(response.data.map(x => x.weight),8).map((item, index) => {
           return {
             x: new Date(response.data[index].time).getTime(),
@@ -137,11 +152,12 @@ export default {
           }
 
         })
-        */
+
 
 
         this.series = [
           { name: 'Weight', data: chart_data },
+          { name: 'Moving average', data: average_data },
         ]
 
       })

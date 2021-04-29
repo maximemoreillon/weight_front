@@ -1,25 +1,43 @@
 <template>
   <div id="app">
 
-    <AppTemplate applicationName="Weight"/>
+    <AppTemplate
+      :options="options">
+
+    </AppTemplate>
 
   </div>
 </template>
 
 <script>
-
+//import AppTemplate from '@/components/vue_application_template/AppTemplate.vue'
 import AppTemplate from '@moreillon/vue_application_template'
 
+
+
 export default {
-  name: 'App',
+  name: 'app',
   components: {
     AppTemplate,
-  },
-  mounted(){
 
   },
+
+
+  data(){
+    return {
+      options: {
+        title: 'Weight',
+        authenticate: true,
+        login_url: `${process.env.VUE_APP_AUTHENTICATION_API_URL}/login`,
+        identification_url: `${process.env.VUE_APP_AUTHENTICATION_API_URL}/whoami`
+      },
+    }
+  },
+
+
 }
 </script>
+
 <style>
 button,
 .button {

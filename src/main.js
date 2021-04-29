@@ -14,6 +14,7 @@ Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 
 // Redirect to login screen if not logged in (i.e. does not have JWT in cookies)
+/*
 router.beforeEach((to, from, next) => {
 
   if(Vue.$cookies.get("jwt")) {
@@ -27,6 +28,7 @@ router.beforeEach((to, from, next) => {
   next();
 
 });
+*/
 
 Vue.config.productionTip = false
 

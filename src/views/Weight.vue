@@ -1,7 +1,11 @@
 <template>
   <div class="weight">
 
-    <Loader v-if="loading"/>
+    <div class="loader_wrapper">
+      <Loader v-if="loading" />
+    </div>
+
+
     <template v-if="!loading">
       <p class="current_weight_wrapper">
         Current weight: {{current_weight}} kg
@@ -150,9 +154,7 @@ export default {
             x: new Date(response.data[index].time).getTime(),
             y: item
           }
-
         })
-
 
 
         this.series = [
@@ -174,51 +176,35 @@ export default {
     },
 
     updateData(timeline){
-        this.selection = timeline
+      this.selection = timeline
 
-        switch (timeline) {
-          case 'one_month':
-            this.$refs.chart.zoomX(
-              new Date().setMonth(new Date().getMonth() - 1),
-              new Date()
-            )
-            break
-          case 'six_months':
-            this.$refs.chart.zoomX(
-              new Date().setMonth(new Date().getMonth() - 6),
-              new Date()
-            )
-            break
-          case 'one_year':
-            this.$refs.chart.zoomX(
-              new Date().setMonth(new Date().getMonth() - 12),
-              new Date()
-            )
-            break
-          case 'all':
-            this.$refs.chart.zoomX(
-              this.series[0].data[0][0],
-              new Date(),
-            )
-            break
-          default:
-            this.$refs.chart.zoomX(
-              this.series[0].data[0][0],
-              new Date(),
-            )
-        }
+      switch (timeline) {
+        case 'one_month':
+          this.$refs.chart.zoomX( new Date().setMonth(new Date().getMonth() - 1), new Date() )
+          break
+        case 'six_months':
+          this.$refs.chart.zoomX( new Date().setMonth(new Date().getMonth() - 6), new Date() )
+          break
+        case 'one_year':
+          this.$refs.chart.zoomX( new Date().setMonth(new Date().getMonth() - 12), new Date() )
+          break
+        case 'all':
+          this.$refs.chart.zoomX( this.series[0].data[0][0], new Date(), )
+          break
+        default:
+          this.$refs.chart.zoomX(   this.series[0].data[0][0], new Date(), )
       }
-
-
+    }
   },
-
-
-
 }
 
 </script>
 
 <style scoped>
+
+.loader_wrapper {
+  margin-top: 10vh;
+}
 .current_weight_wrapper{
   text-align: center;
   font-size: 150%;

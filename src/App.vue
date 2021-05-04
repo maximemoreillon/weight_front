@@ -1,12 +1,5 @@
 <template>
-  <div id="app">
-
-    <AppTemplate
-      :options="options">
-
-    </AppTemplate>
-
-  </div>
+  <AppTemplate :options="options" />
 </template>
 
 <script>

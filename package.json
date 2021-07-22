@@ -9,11 +9,12 @@
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
-    "@moreillon/vue_application_template": "^2.0.0",
+    "@moreillon/vue_application_template": "^3.0.0",
     "apexcharts": "^3.25.0",
     "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "core-js": "^3.9.1",
+    "register-service-worker": "^1.7.1",
     "vue": "^2.6.12",
     "vue-apexcharts": "^1.6.0",
     "vue-axios": "^2.1.5",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.11",
     "@vue/cli-plugin-eslint": "^4.5.11",
+    "@vue/cli-plugin-pwa": "^4.5.13",
     "@vue/cli-plugin-router": "^4.5.11",
     "@vue/cli-plugin-vuex": "^4.5.11",
     "@vue/cli-service": "^4.5.11",

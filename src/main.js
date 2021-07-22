@@ -6,6 +6,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookies from 'vue-cookies'
 import VueApexCharts from 'vue-apexcharts'
+import './registerServiceWorker'
 
 Vue.use(VueAxios, axios)
 Vue.use(VueCookies)

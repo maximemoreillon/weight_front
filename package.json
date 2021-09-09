@@ -1,6 +1,6 @@
 {
   "name": "weight_front",
-  "version": "0.1.1",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
-    "@moreillon/vue_application_template": "^3.0.0",
-    "apexcharts": "^3.25.0",
-    "axios": "^0.21.1",
+    "@moreillon/vue_application_template": "^3.1.0",
+    "apexcharts": "^3.28.1",
+    "axios": "^0.21.4",
     "chart.js": "^2.9.4",
-    "core-js": "^3.9.1",
+    "core-js": "^3.17.3",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.12",
-    "vue-apexcharts": "^1.6.0",
+    "vue-apexcharts": "^1.6.2",
     "vue-axios": "^2.1.5",
     "vue-chartjs": "^3.5.1",
     "vue-cookies": "^1.7.4",

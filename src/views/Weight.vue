@@ -1,45 +1,53 @@
 <template>
   <div class="weight">
 
-    <div class="loader_wrapper">
-      <Loader v-if="loading" />
+    <div
+      v-if="loading"
+      class="loader_wrapper">
+      <Loader  />
     </div>
 
 
-    <template v-if="!loading">
-      <p class="current_weight_wrapper">
-        Current weight: {{current_weight}} kg
-      </p>
+    <div class="plot_wrapper" v-if="!loading">
 
-      <p class="zoom_buttons_wrapper">
+      <div class="current_weight_wrapper">
+        <div class="current_weight">
+          Current weight: {{current_weight}} kg
+        </div>
+        <div class="last_retrieved">
+          Retrieved {{last_retrieved}}
+        </div>
+      </div>
+
+      <div class="zoom_buttons_wrapper">
+        <button
+          id="one_month"
+          @click="updateData('one_month')"
+          :class="{active: selection==='one_month'}">
+          1M
+        </button>
+
           <button
-            id="one_month"
-            @click="updateData('one_month')"
-            :class="{active: selection==='one_month'}">
-            1M
+            id="six_months"
+            @click="updateData('six_months')"
+            :class="{active: selection==='six_months'}">
+            6M
           </button>
 
-            <button
-              id="six_months"
-              @click="updateData('six_months')"
-              :class="{active: selection==='six_months'}">
-              6M
-            </button>
+          <button
+            id="one_year"
+            @click="updateData('one_year')"
+            :class="{active: selection==='one_year'}">
+            1Y
+          </button>
 
-            <button
-              id="one_year"
-              @click="updateData('one_year')"
-              :class="{active: selection==='one_year'}">
-              1Y
-            </button>
-
-            <button
-              id="all"
-              @click="updateData('all')"
-              :class="{active: selection==='all'}">
-              ALL
-            </button>
-        </p>
+          <button
+            id="all"
+            @click="updateData('all')"
+            :class="{active: selection==='all'}">
+            ALL
+          </button>
+        </div>
 
       <div
         class="chart_wrapper">
@@ -50,7 +58,7 @@
           :options="options"
           :series="series" />
       </div>
-    </template>
+    </div>
 
 
 
@@ -70,7 +78,8 @@ export default {
   data(){
     return {
       loading: false,
-      current_weight: 'loading',
+      current_weight: null,
+      last_retrieved: null,
       selection: 'all',
 
       options: {
@@ -137,11 +146,12 @@ export default {
       const url = `${process.env.VUE_APP_WEIGHT_API_URL}/history`
 
       this.axios.get(url)
-      .then(response => {
+      .then(({data}) => {
 
-        this.current_weight = response.data[response.data.length-1].weight
+        this.current_weight = data[data.length-1].weight
+        this.last_retrieved = new Date(data[data.length-1].time).toLocaleString()
 
-        const chart_data = response.data.map((entry) => {
+        const chart_data = data.map((entry) => {
           return {
             x: new Date(entry.time).getTime(),
             y: entry.weight
@@ -149,9 +159,9 @@ export default {
         })
 
 
-        const average_data = this.moving_average(response.data.map(x => x.weight),8).map((item, index) => {
+        const average_data = this.moving_average(data.map(x => x.weight),8).map((item, index) => {
           return {
-            x: new Date(response.data[index].time).getTime(),
+            x: new Date(data[index].time).getTime(),
             y: item
           }
         })
@@ -189,25 +199,40 @@ export default {
           this.$refs.chart.zoomX( new Date().setMonth(new Date().getMonth() - 12), new Date() )
           break
         case 'all':
-          this.$refs.chart.zoomX( this.series[0].data[0][0], new Date(), )
+          this.$refs.chart.zoomX( this.series[0].data[0][0], new Date() )
           break
         default:
-          this.$refs.chart.zoomX(   this.series[0].data[0][0], new Date(), )
+          this.$refs.chart.zoomX( this.series[0].data[0][0], new Date() )
       }
     }
   },
+  computed: {
+  }
 }
 
 </script>
 
 <style scoped>
 
+.plot_wrapper {
+  margin-top: 3em;
+}
+
 .loader_wrapper {
   margin-top: 10vh;
 }
+
 .current_weight_wrapper{
   text-align: center;
+}
+
+.current_weight{
   font-size: 150%;
+  margin: 0.25em;
+}
+
+.last_retrieved {
+  color: #666666;
 }
 
 .chart_wrapper {

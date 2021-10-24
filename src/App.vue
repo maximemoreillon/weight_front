@@ -32,6 +32,7 @@ export default {
 </script>
 
 <style>
+
 button,
 .button {
   font-size: 85%;

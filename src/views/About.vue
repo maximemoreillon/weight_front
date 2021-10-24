@@ -3,11 +3,6 @@
     <h1>About</h1>
     <p>Author: Maxime MOREILLON</p>
     <p>Version: {{version}}</p>
-
-
-
-
-
   </div>
 </template>
 

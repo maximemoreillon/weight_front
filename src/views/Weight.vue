@@ -143,25 +143,27 @@ export default {
     get_weight_history(){
       // Loading history
       this.loading = true
-      const url = `${process.env.VUE_APP_WEIGHT_API_URL}/history`
+      const url = `${process.env.VUE_APP_WEIGHT_API_URL}/points`
 
       this.axios.get(url)
       .then(({data}) => {
 
-        this.current_weight = data[data.length-1].weight
-        this.last_retrieved = new Date(data[data.length-1].time).toLocaleString()
+        console.log(data)
+
+        this.current_weight = data[data.length-1]._value
+        this.last_retrieved = new Date(data[data.length-1]._time).toLocaleString()
 
         const chart_data = data.map((entry) => {
           return {
-            x: new Date(entry.time).getTime(),
-            y: entry.weight
+            x: new Date(entry._time).getTime(),
+            y: entry._value
           }
         })
 
 
-        const average_data = this.moving_average(data.map(x => x.weight),8).map((item, index) => {
+        const average_data = this.moving_average(data.map(x => x._value),8).map((item, index) => {
           return {
-            x: new Date(data[index].time).getTime(),
+            x: new Date(data[index]._time).getTime(),
             y: item
           }
         })

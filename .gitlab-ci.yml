@@ -1,29 +1,36 @@
-stages:
-  - containerization
-  - deployment
+image: moreillon/ci-dind
+services:
+  - name: docker:19.03.12-dind
 
 variables:
   APPLICATION_NAME: weight-front
-  DOCKER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
+  CONTAINER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
+  CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:${CI_COMMIT_SHORT_SHA}
   CERTIFICATE_DOMAIN: weight.maximemoreillon.com
 
-containerization:
-  stage: containerization
-  script:
-    # Docker hub login
-    - echo "${DOCKER_HUB_PASSWORD}" | docker login --username ${DOCKER_HUB_USERNAME} --password-stdin
-    # Building the container image
-    - docker build -t ${DOCKER_IMAGE} .
-    # Pushing the image to the registry
-    - docker push ${DOCKER_IMAGE}
-    # Cleanup
-    - docker image rm ${DOCKER_IMAGE}
 
-deployment:
-  stage: deployment
+build:
+  stage: build
+  only:
+    - master
+  tags:
+    - dind
   script:
-    - envsubst < deployment.yml | kubectl apply -f -
-    - kubectl rollout restart deployment/${APPLICATION_NAME}
+    - echo "${DOCKER_HUB_PASSWORD}" | docker login --username ${DOCKER_HUB_USERNAME} --password-stdin;
+    - docker build -t ${CONTAINER_IMAGE} .
+    - docker tag  ${CONTAINER_IMAGE} ${CONTAINER_IMAGE_TAGGED}
+    - docker push ${CONTAINER_IMAGE}
+    - docker push ${CONTAINER_IMAGE_TAGGED}
+
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  tags:
+    - dind
+  script:
+    - envsubst < kubernetes_manifest.yml | kubectl apply -f -
   environment:
     name: production
     kubernetes:

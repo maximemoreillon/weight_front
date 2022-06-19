@@ -148,8 +148,6 @@ export default {
       this.axios.get(url)
       .then(({data}) => {
 
-        console.log(data)
-
         this.current_weight = data[data.length-1]._value
         this.last_retrieved = new Date(data[data.length-1]._time).toLocaleString()
 

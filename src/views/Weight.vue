@@ -141,11 +141,11 @@ export default {
       })
     },
     get_weight_history(){
-      // Loading history
+
       this.loading = true
       const url = `${process.env.VUE_APP_WEIGHT_API_URL}/points`
-
-      this.axios.get(url)
+      const params = {limit: 0}
+      this.axios.get(url, {params})
       .then(({data}) => {
 
         this.current_weight = data[data.length-1]._value

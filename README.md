@@ -1,24 +1,6 @@
-# weight_front
+# Weight tracker GUI
 
-## Project setup
-```
-npm install
-```
+GUI for the weight tracking application.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+[![dockeri.co](https://dockeri.co/image/moreillon/weight-front)](https://hub.docker.com/r/moreillon/weight-front)
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

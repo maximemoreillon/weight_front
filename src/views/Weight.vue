@@ -20,33 +20,15 @@
       </div>
 
       <div class="zoom_buttons_wrapper">
+
         <button
-          id="one_month"
-          @click="updateData('one_month')"
-          :class="{active: selection==='one_month'}">
-          1M
+          v-for="(p, index) in periods"
+          :key="index"
+          @click="period = p"
+          :class="{active: period.value === p.value}">
+          {{ p.text }}
         </button>
 
-          <button
-            id="six_months"
-            @click="updateData('six_months')"
-            :class="{active: selection==='six_months'}">
-            6M
-          </button>
-
-          <button
-            id="one_year"
-            @click="updateData('one_year')"
-            :class="{active: selection==='one_year'}">
-            1Y
-          </button>
-
-          <button
-            id="all"
-            @click="updateData('all')"
-            :class="{active: selection==='all'}">
-            ALL
-          </button>
         </div>
 
       <div
@@ -81,6 +63,13 @@ export default {
       current_weight: null,
       last_retrieved: null,
       selection: 'all',
+      period: null,
+      periods: [
+        { text: '1M', value: 1 },
+        { text: '6M', value: 6 },
+        { text: '1Y', value: 12 },
+        { text: 'All', value: null },
+      ],
 
       options: {
         chart: {
@@ -126,10 +115,20 @@ export default {
 
     }
   },
+  
   mounted(){
-    this.get_weight_history()
+    this.period = this.periods[1]
+  },
+  watch: {
+    period(){
+      this.get_weight_history()
+    }
   },
   methods: {
+    addMonths(date, months) {
+      date.setMonth(date.getMonth() + months);
+      return date;
+    },
     moving_average(input_array, sample_count){
       sample_count = sample_count ?? 10
       return input_array.map((item, index) => {
@@ -143,28 +142,28 @@ export default {
     get_weight_history(){
 
       this.loading = true
-      const url = `${process.env.VUE_APP_WEIGHT_API_URL}/points`
-      const params = {limit: 0}
+      const url = `/points`
+      const params = { limit: 0 } // No subsampling
+
+      if (this.period.value) params.start = this.addMonths(new Date(), - this.period.value)
+
       this.axios.get(url, {params})
       .then(({data}) => {
 
         this.current_weight = data[data.length-1]._value
         this.last_retrieved = new Date(data[data.length-1]._time).toLocaleString()
 
-        const chart_data = data.map((entry) => {
-          return {
+        const chart_data = data.map((entry) => ({
             x: new Date(entry._time).getTime(),
             y: entry._value
-          }
-        })
+          })
+        )
 
 
-        const average_data = this.moving_average(data.map(x => x._value),8).map((item, index) => {
-          return {
+        const average_data = this.moving_average(data.map(x => x._value),8).map((item, index) => ({
             x: new Date(data[index]._time).getTime(),
             y: item
-          }
-        })
+          }) )
 
 
         this.series = [
@@ -185,29 +184,8 @@ export default {
       .finally(() => {this.loading = false})
     },
 
-    updateData(timeline){
-      this.selection = timeline
-
-      switch (timeline) {
-        case 'one_month':
-          this.$refs.chart.zoomX( new Date().setMonth(new Date().getMonth() - 1), new Date() )
-          break
-        case 'six_months':
-          this.$refs.chart.zoomX( new Date().setMonth(new Date().getMonth() - 6), new Date() )
-          break
-        case 'one_year':
-          this.$refs.chart.zoomX( new Date().setMonth(new Date().getMonth() - 12), new Date() )
-          break
-        case 'all':
-          this.$refs.chart.zoomX( this.series[0].data[0][0], new Date() )
-          break
-        default:
-          this.$refs.chart.zoomX( this.series[0].data[0][0], new Date() )
-      }
-    }
   },
-  computed: {
-  }
+
 }
 
 </script>

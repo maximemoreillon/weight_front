@@ -8,28 +8,13 @@ import VueCookies from 'vue-cookies'
 import VueApexCharts from 'vue-apexcharts'
 import './registerServiceWorker'
 
+axios.defaults.baseURL = process.env.VUE_APP_WEIGHT_API_URL
 Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
 Vue.use(VueApexCharts)
 
 Vue.component('apexchart', VueApexCharts)
 
-// Redirect to login screen if not logged in (i.e. does not have JWT in cookies)
-/*
-router.beforeEach((to, from, next) => {
-
-  if(Vue.$cookies.get("jwt")) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${Vue.$cookies.get('jwt')}`
-  }
-  else {
-    delete axios.defaults.headers.common['Authorization']
-    window.location.href = process.env.VUE_APP_AUTHENTICATION_FRONT_URL
-  }
-
-  next();
-
-});
-*/
 
 Vue.config.productionTip = false
 

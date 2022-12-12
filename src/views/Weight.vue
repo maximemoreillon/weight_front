@@ -25,7 +25,7 @@
           v-for="(p, index) in periods"
           :key="index"
           @click="period = p"
-          :class="{active: period.value === p.value}">
+          :class="{active: !!period && period.value === p.value}">
           {{ p.text }}
         </button>
 

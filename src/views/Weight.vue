@@ -1,69 +1,37 @@
 <template>
-  <div class="weight">
-
-    <div
-      v-if="loading"
-      class="loader_wrapper">
-      <Loader  />
-    </div>
-
-
-    <div class="plot_wrapper" v-if="!loading">
-
-      <div class="current_weight_wrapper">
-        <div class="current_weight">
-          Current weight: {{current_weight}} kg
-        </div>
-        <div class="last_retrieved">
-          Retrieved {{last_retrieved}}
-        </div>
-      </div>
-
-      <div class="zoom_buttons_wrapper">
-
-        <button
-          v-for="(p, index) in periods"
-          :key="index"
-          @click="period = p"
-          :class="{active: !!period && period.value === p.value}">
-          {{ p.text }}
-        </button>
-
-        </div>
-
-      <div
-        class="chart_wrapper">
-        <apexchart
-          ref="chart"
-          width="100%"
-          height="100%"
-          :options="options"
-          :series="series" />
-      </div>
-    </div>
-
-
-
-
-  </div>
+  <v-card :loading="loading">
+    <v-toolbar flat>
+      <v-row align="center">
+        <v-col>
+          <v-card-title>Current weight: {{current_weight}} kg</v-card-title>
+          <v-card-subtitle>Retrieved {{last_retrieved}}</v-card-subtitle>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="auto">
+          <v-btn-toggle v-model="periodIndex" mandatory>
+            <v-btn v-for="(p, index) in periods" :key="index">
+              {{ p.text }}
+            </v-btn>
+          </v-btn-toggle>
+        </v-col>
+      </v-row>
+    </v-toolbar>
+    <v-card-text>
+      <apexchart ref="chart" width="100%" height="500px" :options="options" :series="series" />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
-// @ is an alias to /src
-import Loader from '@/components/Loader.vue'
 
 export default {
   name: 'Weight',
-  components: {
-    Loader
-  },
   data(){
     return {
       loading: false,
       current_weight: null,
       last_retrieved: null,
-      selection: 'all',
-      period: null,
+      periodIndex: 0,
       periods: [
         { text: '1M', value: 1 },
         { text: '6M', value: 6 },
@@ -115,12 +83,11 @@ export default {
 
     }
   },
-  
   mounted(){
-    this.period = this.periods[1]
+    this.get_weight_history()
   },
   watch: {
-    period(){
+    periodIndex(){
       this.get_weight_history()
     }
   },
@@ -145,7 +112,8 @@ export default {
       const url = `/points`
       const params = { limit: 0 } // No subsampling
 
-      if (this.period.value) params.start = this.addMonths(new Date(), - this.period.value)
+      const period = this.periods[this.periodIndex]
+      if (period.value) params.start = this.addMonths(new Date(), - period.value)
 
       this.axios.get(url, {params})
       .then(({data}) => {
@@ -190,40 +158,4 @@ export default {
 
 </script>
 
-<style scoped>
 
-.plot_wrapper {
-  margin-top: 3em;
-}
-
-.loader_wrapper {
-  margin-top: 10vh;
-}
-
-.current_weight_wrapper{
-  text-align: center;
-}
-
-.current_weight{
-  font-size: 150%;
-  margin: 0.25em;
-}
-
-.last_retrieved {
-  color: #666666;
-}
-
-.chart_wrapper {
-  height: 60vh;
-}
-
-.zoom_buttons_wrapper button:not(:last-child) {
-  margin-right: 0.5em;
-}
-
-.zoom_buttons_wrapper button.active {
-  color: white;
-  background-color: #c00000;
-  border-color: #c00000;
-}
-</style>

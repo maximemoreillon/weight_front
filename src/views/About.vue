@@ -1,9 +1,11 @@
 <template>
-  <div class="about">
-    <h1>About</h1>
-    <p>Author: Maxime MOREILLON</p>
-    <p>Version: {{version}}</p>
-  </div>
+  <v-card max-width="40rem" class="mx-auto">
+    <v-card-title>About</v-card-title>
+    <v-card-text>
+      <p>Author: Maxime MOREILLON</p>
+      <p>Version: {{ version }}</p>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

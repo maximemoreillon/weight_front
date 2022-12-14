@@ -1,21 +1,20 @@
 <template>
   <v-card :loading="loading">
-    <v-toolbar flat>
-      <v-row align="center">
-        <v-col>
-          <v-card-title>Current weight: {{current_weight}} kg</v-card-title>
-          <v-card-subtitle>Retrieved {{last_retrieved}}</v-card-subtitle>
+    <v-container fluid>
+      <v-row dense align="center" justify="space-between">
+        <v-col cols="12" md="6">
+          <v-card-title>{{current_weight}} kg</v-card-title>
+          <v-card-subtitle>As of {{last_retrieved}}</v-card-subtitle>
         </v-col>
-        <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn-toggle v-model="periodIndex" mandatory>
+          <v-btn-toggle v-model="periodIndex" mandatory dense>
             <v-btn v-for="(p, index) in periods" :key="index">
               {{ p.text }}
             </v-btn>
           </v-btn-toggle>
         </v-col>
       </v-row>
-    </v-toolbar>
+    </v-container>
     <v-card-text>
       <apexchart ref="chart" width="100%" height="500px" :options="options" :series="series" />
     </v-card-text>

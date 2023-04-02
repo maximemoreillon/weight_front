@@ -6,8 +6,7 @@ variables:
   APPLICATION_NAME: weight-front
   CONTAINER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
   CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:${CI_COMMIT_SHORT_SHA}
-  CERTIFICATE_DOMAIN: weight.maximemoreillon.com
-
+  K8S_INGRESS_HOST: weight.maximemoreillon.com
 
 build:
   stage: build
@@ -21,7 +20,6 @@ build:
     - docker tag  ${CONTAINER_IMAGE} ${CONTAINER_IMAGE_TAGGED}
     - docker push ${CONTAINER_IMAGE}
     - docker push ${CONTAINER_IMAGE_TAGGED}
-
 
 deploy:
   stage: deploy

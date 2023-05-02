@@ -6,7 +6,7 @@ variables:
   APPLICATION_NAME: weight-front
   CONTAINER_IMAGE: ${DOCKER_HUB_USERNAME}/${APPLICATION_NAME}
   CONTAINER_IMAGE_TAGGED: ${CONTAINER_IMAGE}:${CI_COMMIT_SHORT_SHA}
-  K8S_INGRESS_HOST: weight.maximemoreillon.com
+  K8S_INGRESS_HOST: weight.home.maximemoreillon.com
 
 build:
   stage: build
